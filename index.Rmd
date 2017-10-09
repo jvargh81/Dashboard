@@ -1,0 +1,65 @@
+---
+title: "Babe Ruth Homerun and strikeouts analysis."
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+Inputs {.sidebar}
+---------------------------------------------------------
+Babe Ruth was a power hitter for the New York Yankee's in the 20's and 30's.
+He held the record for most homeruns hit in a season until the 60's.
+
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(Lahman)
+library(dplyr)
+library(ggplot2)
+
+#extracting the data I want.
+result<-Batting%>%
+  filter(playerID=='ruthba01')%>%
+  select(yearID,SO,HR)
+```
+
+row {data-height=350}
+-----------------------------------------------------------------------
+
+### Strikeout vs Homerun
+
+```{r}
+# visualize the data using scatter plot.
+ggplot()+
+  geom_point(data=result,aes(x=SO,y=HR))+
+  xlab("Strike outs")+
+  ylab("Homeruns")
+
+```
+
+
+
+### Homeruns
+
+```{r}
+# visualize the data using histogram.
+ggplot()+
+  geom_histogram(data=result,aes(x=HR),color='white',bins=15)+
+  xlab("Homeruns")
+```
+
+row {data-height=500}
+-----------------------------------------------------------------------
+### Homerun totals through out the years
+
+```{r}
+# visualize the data using scatter_plot and line graph.
+ggplot()+
+  geom_point(data=result,aes(x=yearID,y=HR))+
+  geom_line(data=result,aes(x=yearID,y=HR))+
+  xlab("Year")+
+  ylab("Homeruns")
+
+```
+
